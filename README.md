@@ -24,6 +24,6 @@ Built from scratch with a Python backend and modern frontend tools.
 ## 📦 Installation
 ```bash
 git clone https://github.com/yourusername/dream-chat-app.git
-cd dream-chat-app
+cd ai-dream-chat
 pip install -r requirements.txt
 
