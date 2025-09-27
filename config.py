@@ -5,5 +5,5 @@ load_dotenv() #load .env variables
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + 'user.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + 'ADC.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
