@@ -11,3 +11,8 @@ def validate_email(email):
         return True
     else:
         return False
+    
+    # generate a random number for the token
+def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+    

@@ -1,8 +1,8 @@
 from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
-from toolz import validate_email, random_generator
-from models import StoredjwtToken, User, PasswordResetToken, CartItem, Product
+from toolz import random_generator, validate_email
+from models import StoredjwtToken, User, PasswordResetToken
 from auth import auth
 
 # Sign up
@@ -10,11 +10,15 @@ from auth import auth
 # @cross_origin()
 def sign_up():
         data = request.json
+        username = data.get('username')
         email = data.get('email')
         password = data.get('password')
         
         if email is None and password is None:
             return jsonify({'error': 'Invalid input'}), 400
+        
+        if username is None or len(username) < 3:
+            return jsonify({'error': 'Username must be more than 2 characters'}), 400
         
         if not  validate_email(email):
             return jsonify({'error': 'Enter a valid email address'}), 400
@@ -23,10 +27,10 @@ def sign_up():
         if exists is not None:
             return jsonify({'error': 'User with email already exists'}), 400
         
-        if password is None or  len(password) > 6:
+        if password is None or  len(password) < 6:
             return jsonify({'error': 'Password must be more than 6 characters'})
         
-        new_user = User(email=email)
+        new_user = User(username=username, email=email)
         db.session.add(new_user)
         new_user.set_password(password)
         
@@ -43,7 +47,7 @@ def sign_up():
 @app.route('/login', methods=['POST'])
 @cross_origin()
 def login():
-    data = request.get_json()
+    data = request.json
 
     email = data.get('email')
     password = data.get('password')
