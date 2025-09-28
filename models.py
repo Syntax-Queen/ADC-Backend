@@ -11,6 +11,7 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password_hash = db.Column(db.String(100), nullable=False )
     created_at = db.Column(db.DateTime, default=datetime.now)
+    posts = db.relationship('Post', backref='author')
     
     def __repr__(self):
         return f"<User {self.email}>"
@@ -62,3 +63,22 @@ class PasswordResetToken(db.Model):
     user_id = db.Column(db.Integer, nullable=False)
     used = db.Column(db.Boolean, nullable=False, default=False)
     generated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    
+    
+
+# POST
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150),  nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+    
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DataTime, default=datetime.utcnow)
+    # Relationship
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
+        

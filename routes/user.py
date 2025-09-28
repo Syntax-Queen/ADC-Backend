@@ -2,7 +2,7 @@ from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
 from toolz import random_generator, validate_email
-from models import StoredjwtToken, User, PasswordResetToken
+from models import StoredjwtToken, User, PasswordResetToken, Post
 from auth import auth
 
 # Sign up
@@ -91,7 +91,6 @@ def forgot_password():
         return jsonify({'error': 'User with this email does not exist'}), 400
     
     # create a password reset token
-    
     token = random_generator(8)
     reset = PasswordResetToken(token=token, user_id=user.id, used=False)
     db.session.add(reset)
@@ -129,3 +128,32 @@ def reset_password():
     
     db.session.commit()
     return jsonify({'success': True, 'message': 'Password reset successfully'}), 200
+
+
+# Post
+@app.route('post', methods=['POST'])
+@auth.login_required
+def post():
+    data = request.json
+    title = data.get('title')
+    content = data.get('content')
+    current_user = auth.current_user()
+    
+    if not title or not content:
+        return jsonify({'error':False, 'Message': 'Invalid input'}), 400
+    
+    post = Post(title=title, content=content, user_id=current_user.id)
+    
+    db.session.add(post)
+    db.session.commit()
+    return jsonify({
+        'success': True, 
+        'post': {
+            'id': post.id,
+            'title':post.title,
+            'content': post.content,
+            'author': current_user.username
+            
+        }
+        }), 201
+    
