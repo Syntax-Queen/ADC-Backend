@@ -2,7 +2,7 @@ from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
 from toolz import random_generator, validate_email
-from models import Comment, StoredjwtToken, User, PasswordResetToken, Post
+from models import Comment, StoredJwtToken, User, PasswordResetToken, Post
 from auth import auth
 
 # Sign up
@@ -131,7 +131,7 @@ def reset_password():
 
 
 # Post
-@app.route('post', methods=['POST'])
+@app.route('/post', methods=['POST'])
 @auth.login_required
 def post():
     data = request.json
@@ -158,7 +158,7 @@ def post():
         }), 201
     
     
-@app.route('add_comment', methods=['POST'])
+@app.route('/add-comment', methods=['POST'])
 @auth.login_required
 def add_comment(post_id):
     data = request.json
@@ -171,7 +171,7 @@ def add_comment(post_id):
     # check if post exist
     user_comment = Comment(comment=comment, user_id=current_user.id, post_id=post.id)
     
-    db.session.add(comment)
+    db.session.add(user_comment)
     db.session.commit()
     
     return jsonify({

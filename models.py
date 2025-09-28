@@ -10,7 +10,7 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password_hash = db.Column(db.String(100), nullable=False )
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     posts = db.relationship('Post', backref='author')
     
     def __repr__(self):
@@ -24,21 +24,23 @@ class User(db.Model):
     
     
     def generate_auth_token(self):
-        expiration_time = datetime.now() + timedelta(days=10)
+        expiration_time = datetime.utcnow() + timedelta(days=10)
         payload ={
             'id': self.id,
             'exp': expiration_time,
         }
         
         token = jwt.encode(payload, os.environ.get('SECRET_KEY'), algorithm='HS256')
-        return token
+        if isinstance(token, bytes):
+            token = token.decode('utf-8')
+            return token
     
     @staticmethod
     def verify_auth_token(token):
         if not token:
             return None
         try:
-            active_token = StoredjwtToken.query.filter_by(jwt_token=token).first()
+            active_token = StoredJwtToken.query.filter_by(token=token).first()
             if active_token:
                 payload = jwt.decode(token, os.environ.get('SECRET_KEY'), algorithms=['HS256'])
                 user = User.query.get(payload['id'])
@@ -51,16 +53,19 @@ class User(db.Model):
             return None
        
        
-class StoredjwtToken(db.Model):
+class StoredJwtToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    jwt_token = db.Column(db.String(255), unique=True, nullable=True)
-    user_id = db.Column(db.Integer, nullable=True)
+    token = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    user = db.relationship("User", backref="tokens")
     
     
 class PasswordResetToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    token = db.Column(db.String(10), nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    token = db.Column(db.String(64), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref='password_reset_token', lazy=True)
     used = db.Column(db.Boolean, nullable=False, default=False)
     generated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     
@@ -78,10 +83,10 @@ class Post(db.Model):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DataTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     # Relationship
-    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     
     # Backrefs
