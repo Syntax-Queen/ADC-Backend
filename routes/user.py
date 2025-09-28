@@ -2,7 +2,7 @@ from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
 from toolz import random_generator, validate_email
-from models import StoredjwtToken, User, PasswordResetToken, Post
+from models import Comment, StoredjwtToken, User, PasswordResetToken, Post
 from auth import auth
 
 # Sign up
@@ -156,4 +156,31 @@ def post():
             
         }
         }), 201
+    
+    
+@app.route('add_comment', methods=['POST'])
+@auth.login_required
+def add_comment(post_id):
+    data = request.json
+    comment = data.get('comment')
+    current_user = auth.current_user()
+    
+    if not comment:
+        return jsonify({'error': 'Comment content is required'}), 400
+    
+    # check if post exist
+    user_comment = Comment(comment=comment, user_id=current_user.id, post_id=post.id)
+    
+    db.session.add(comment)
+    db.session.commit()
+    
+    return jsonify({
+        'success': True,
+        'comment': {
+            'id': comment.id,
+            'comment': comment.comment,
+            'author': current_user.username,
+            'post_id': post.id
+        }
+    }), 201
     

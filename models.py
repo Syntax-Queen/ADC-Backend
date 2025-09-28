@@ -77,8 +77,14 @@ class Post(db.Model):
     
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
+    comment = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DataTime, default=datetime.utcnow)
+    
     # Relationship
-    user = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    
+    # Backrefs
+    user = db.relationship('User', backref='comments', lazy=True)
+    post = db.relationship('Post', backref='comments', lazy=True)    
         
