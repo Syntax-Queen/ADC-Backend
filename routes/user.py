@@ -141,7 +141,6 @@ def delete_user(did):
     return jsonify({'done': True, 'Message': f'{user.username} Account deleted successfully'})
     
 
-
 # Post
 @app.route('/post', methods=['POST'])
 @auth.login_required
@@ -168,8 +167,36 @@ def post():
             
         }
         }), 201
+
+
+# view all posts and comments
+@app.route('/view-posts-comment', methods=['GET'])
+def view_post_comment():
+    posts = Post.query.all()
+    results = []
     
-    
+    for post in posts:
+        results.append({
+            'id': post.id,
+            'title': post.title,
+            'content': post.content,
+            'author_id' : post.user_id,
+            'created_at' : post.created_at.isoformat(),
+            
+            'comment': [
+                {
+                    'id' : c.id,
+                    'comment': c.comment,
+                    'author_id' : c.user_id,
+                    'created_at' : c.created_at.isoformat()
+                } for c in post.comments
+            ]
+            
+        })
+    return jsonify(results), 200
+ 
+
+# post comment   
 @app.route('/add-comment/<int:post_id>', methods=['POST'])
 @auth.login_required
 def add_comment(post_id):
