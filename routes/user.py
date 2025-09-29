@@ -4,6 +4,7 @@ from flask_cors import cross_origin
 from toolz import random_generator, validate_email
 from models import Comment, StoredjwtToken, User, PasswordResetToken, Post
 from auth import auth
+from datetime import datetime, timedelta
 
 # Sign up
 @app.route('/signup', methods=['POST'])
@@ -225,9 +226,9 @@ def get_post(post_id):
     return jsonify(result), 200
 
 # view comment
-@app.route('/posts/<int:post_id>/comments', methods=['GET'])
+@app.route('/post/<int:post_id>/comments', methods=['GET'])
 def get_comments(post_id):
-    post = Post.query.get
+    post = Post.query.get(post_id)
     
     if not post:
         return jsonify({'error': 'Post not found'}), 404
@@ -242,6 +243,44 @@ def get_comments(post_id):
             
     ]
     return jsonify(comments), 200
+
+
+# edit post after 24 hours
+@app.route('/post/<int:post_id>/edit', methods=['PUT'])
+@auth.login_required
+def edit_post(post_id):
+    data = request.json
+    current_user = auth.current_user()
+    
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 400
+    
+    # check ownership
+    if post.user_id != current_user.id:
+        return jsonify({'error': 'You can only edit your own posts'}), 403
+    
+    # check time restriction
+    time_limit = post.created_at + timedelta(hours=3)
+    if datetime.utcnow() > time_limit:
+        return jsonify({'error': 'Edit window has expired. Posts can only be edited within 3 hours'}), 403
+    
+    # changes update
+    post.title = data.get('title', post.title)
+    post.content = data.get('content', post.content)
+    db.session.commit()
+    
+    return jsonify({'success': True, 
+                    'message' : 'Post updated successfully',
+                    'post' : {
+                        'id' : post.id,
+                        'title': post.title,
+                        'content' : post.content,
+                        'created_at' : post.created_at.isoformat()
+                    }
+                    
+                    }), 200
+    
 
 # post comment   
 @app.route('/add-comment/<int:post_id>', methods=['POST'])
