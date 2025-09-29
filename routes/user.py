@@ -2,7 +2,7 @@ from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
 from toolz import random_generator, validate_email
-from models import Comment, StoredJwtToken, User, PasswordResetToken, Post
+from models import Comment, StoredjwtToken, User, PasswordResetToken, Post
 from auth import auth
 
 # Sign up
@@ -130,6 +130,18 @@ def reset_password():
     return jsonify({'success': True, 'message': 'Password reset successfully'}), 200
 
 
+# delete users
+@app.route('/<int:did>', methods=['DELETE'])
+def delete_user(did):
+    user = User.query.filter(User.id == did).first()
+    if user is None:
+        return jsonify({'error': 'User does not exit'}), 404
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({'done': True, 'Message': f'{user.username} Account deleted successfully'})
+    
+
+
 # Post
 @app.route('/post', methods=['POST'])
 @auth.login_required
@@ -158,7 +170,7 @@ def post():
         }), 201
     
     
-@app.route('/add-comment', methods=['POST'])
+@app.route('/add-comment/<int:post_id>', methods=['POST'])
 @auth.login_required
 def add_comment(post_id):
     data = request.json
@@ -169,6 +181,11 @@ def add_comment(post_id):
         return jsonify({'error': 'Comment content is required'}), 400
     
     # check if post exist
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
+    
+    # create comment
     user_comment = Comment(comment=comment, user_id=current_user.id, post_id=post.id)
     
     db.session.add(user_comment)
@@ -177,10 +194,11 @@ def add_comment(post_id):
     return jsonify({
         'success': True,
         'comment': {
-            'id': comment.id,
-            'comment': comment.comment,
+            'id': user_comment.id,
+            'comment': user_comment.comment,
             'author': current_user.username,
-            'post_id': post.id
+            'post_id': post.id,
+            'created_at' : user_comment.created_at.isoformat()
         }
     }), 201
     

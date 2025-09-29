@@ -7,11 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.Integer, unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    username = db.Column(db.String(20), unique=True, nullable=False)
     password_hash = db.Column(db.String(100), nullable=False )
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    posts = db.relationship('Post', backref='author')
+    created_at = db.Column(db.DateTime, default=datetime.now)
     
     def __repr__(self):
         return f"<User {self.email}>"
@@ -24,23 +23,22 @@ class User(db.Model):
     
     
     def generate_auth_token(self):
-        expiration_time = datetime.utcnow() + timedelta(days=10)
+        expiration_time = datetime.now() + timedelta(days=10)
         payload ={
             'id': self.id,
             'exp': expiration_time,
+            # 'role': self.role
         }
         
         token = jwt.encode(payload, os.environ.get('SECRET_KEY'), algorithm='HS256')
-        if isinstance(token, bytes):
-            token = token.decode('utf-8')
-            return token
+        return token
     
     @staticmethod
     def verify_auth_token(token):
         if not token:
             return None
         try:
-            active_token = StoredJwtToken.query.filter_by(token=token).first()
+            active_token = StoredjwtToken.query.filter_by(jwt_token=token).first()
             if active_token:
                 payload = jwt.decode(token, os.environ.get('SECRET_KEY'), algorithms=['HS256'])
                 user = User.query.get(payload['id'])
@@ -53,21 +51,20 @@ class User(db.Model):
             return None
        
        
-class StoredJwtToken(db.Model):
+class StoredjwtToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    token = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    user = db.relationship("User", backref="tokens")
+    jwt_token = db.Column(db.String(255), unique=True, nullable=True)
+    user_id = db.Column(db.Integer, nullable=True)
     
     
 class PasswordResetToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    token = db.Column(db.String(64), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref='password_reset_token', lazy=True)
+    token = db.Column(db.String(10), nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
     used = db.Column(db.Boolean, nullable=False, default=False)
     generated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+
+
     
     
 
