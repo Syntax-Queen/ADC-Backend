@@ -214,7 +214,7 @@ def get_post(post_id):
         
         'comments' : [
             {
-            'id' : c.id,
+                    'id' : c.id,
                     'comment': c.comment,
                     'author_id' : c.user_id,
                     'created_at' : c.created_at.isoformat()
@@ -224,6 +224,24 @@ def get_post(post_id):
     } 
     return jsonify(result), 200
 
+# view comment
+@app.route('/posts/<int:post_id>/comments', methods=['GET'])
+def get_comments(post_id):
+    post = Post.query.get
+    
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
+    
+    comments = [
+        {
+                'id' : c.id,
+                'comment': c.comment,
+                'author_id' : c.user_id,
+                'created_at' : c.created_at.isoformat()
+                } for c in post.comments
+            
+    ]
+    return jsonify(comments), 200
 
 # post comment   
 @app.route('/add-comment/<int:post_id>', methods=['POST'])
