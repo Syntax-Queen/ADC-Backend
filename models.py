@@ -90,3 +90,29 @@ class Comment(db.Model):
     user = db.relationship('User', backref='comments', lazy=True)
     post = db.relationship('Post', backref='comments', lazy=True)    
         
+  
+  
+#  Group  
+class Group(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    invite_link = db.Column(db.String(255), unique=True, nullable=True)
+
+# Group member
+class GroupMember(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.Foreignkey('user.id'), nullable=False)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
+    role = db.Column(db.String(20), default='member')
+    joined_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    
+# Message
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
