@@ -2,9 +2,10 @@ from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
 from toolz import random_generator, validate_email
-from models import Comment, StoredjwtToken, User, PasswordResetToken, Post
+from models import Comment, Group, GroupMember, StoredjwtToken, User, PasswordResetToken, Post
 from auth import auth
 from datetime import datetime, timedelta
+import uuid
 
 # Sign up
 @app.route('/signup', methods=['POST'])
@@ -314,4 +315,32 @@ def add_comment(post_id):
             'created_at' : user_comment.created_at.isoformat()
         }
     }), 201
+ 
+
+# create group
+@app.route('/groups', methods=['POST'])
+@auth.login_required
+def create_group():
+    data = request.json
+    current_user = auth.current_user()
     
+    group = Group(
+        name = data.get('name'),
+        owner_id = current_user.id,
+        invite_link = str(uuid.uuid4())  #unique join link
+        
+    )
+    
+    db.session.add(group)
+    db.session.commit()
+    
+    # add creator as member
+    membership = GroupMember(user_id=current_user.id, group_id=group.id, role="admin")
+    db.session.add(membership)
+    db.session.commit()
+    
+    return jsonify({
+        "id" : group.id,
+        "name": group.name,
+        "invite_link" : f"/join/{group.invite_link}"
+    }), 201

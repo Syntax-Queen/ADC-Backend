@@ -103,7 +103,7 @@ class Group(db.Model):
 # Group member
 class GroupMember(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.Foreignkey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
     role = db.Column(db.String(20), default='member')
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
