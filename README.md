@@ -1,53 +1,90 @@
 # ADC Backend
 
-A Flask-powered backend for a group messaging and collaboration system.  
-Users can create groups, send messages in real time using **WebSockets**, join groups through invite links, and manage group membership (add/remove members, delete groups, or leave on their own).
+**Anonymous Dream Chat (ADC)**  
+A backend for a platform where users can post dreams, comment, chat in real time, and explore interpretations across cultures  all anonymously.
+
+## 🌍 Live Demo
+[View Live Website](https://your-live-app-link.com)
+
+---
+## 📖 Documentation
+- [API Docs](ADC-documentation.json)
+- [WebSocket Docs](docs/websocket.md)
+
+## 🌟 Features
+
+- User authentication (sign up, login, JWT tokens)  
+- Post dreams & add comments  
+- Create chat groups, invite via unique link, add/remove users  
+- Real-time messaging with WebSockets  
+- Time-based edit restrictions (e.g., you can edit a post only within 3 hours)  
+- Anonymous by design — no profile photo or personal bios collected  
 
 ---
 
-## 🚀 Features
+## 🧰 Tech Stack
 
-- 🔑 **User Authentication** – Secure login system with `Flask-HTTPAuth`.
-- 👥 **Group Management**
-  - Create groups.
-  - Add/remove members.
-  - Delete groups.
-  - Leave groups independently.
-- 💬 **Messaging**
-  - Send and view messages inside groups.
-  - Real-time messaging powered by **Flask-SocketIO**.
-  - Join/leave notifications with WebSockets.
-- 🔗 **Invite System** – Users can join via a unique invite link.
-- 📜 **Database Integration** – SQLAlchemy + Flask-Migrate for schema handling.
+| Component        | Technology / Library      |
+|------------------|---------------------------|
+| Backend          | Python, Flask             |
+| DB & Migrations  | SQLAlchemy, Flask-Migrate |
+| Real-time        | Flask-SocketIO            |
+| Authentication   | JWT, Flask-HTTPAuth        |
+| Dev / Production DB | SQLite (dev), Postgres (prod) |
 
 ---
 
-## 🛠 Tech Stack
+## 🚀 Installation & Setup
 
-- **Backend:** Flask, Flask-SocketIO, Flask-Migrate, Flask-SQLAlchemy
-- **Auth:** Flask-HTTPAuth
-- **Database:** SQLite / PostgreSQL
-- **Realtime:** WebSockets (Socket.IO)
+# bash
+git clone https://github.com/Syntax-Queen/ADC-Backend.git
+
+cd ADC-Backend
+
+python -m venv .venv
+
+.venv/bin/activate         # or Windows: .venv\Scripts\activate
+
+pip install -r requirements.txt
+
+# Setup your config (e.g. SECRET_KEY, database URI) in `config.py` or via env vars
+
+flask db migrate -m "Initial migration"
+flask db upgrade
+
+# Run with WebSocket support
+python app.py               # or flask run if you wire socketio.run in your entry
+
 
 ---
 
 ## 📸 Screenshots
 
 ### 🔑 Authentication
-![Signup](screenshots/signup.png)
-![Login](screenshots/login.png)
+![Signup](docs/screenshots/signup.png)
+![Login](docs/screenshots/login.png)
 
 ### 👥 Group Management
-![Group](screenshots/group.png)
+![Create-Group](docs/screenshots/create-group.png)
+![delete-Group](docs/screenshots/delete-group.png)
+![join-Group](docs/screenshots/join-group.png)
 
 ### 💬 Messaging
-![Chat](screenshots/chat.png)
+![group-message](docs/screenshots/message.png)
+![Post](docs/screenshots/post.png)
+![view-all-messages](docs/screenshots/view-all-messages.png)
+![view-posts-comments](docs/screenshots/view-post-comments.png)
 
 ---
+# Project Layout
 
-## ⚙️ Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Syntax-Queen/ADC-Backend.git
-   cd ADC-Backend
+├── app.py
+├── auth.py
+├── config.py
+├── models.py
+├── routes/
+│   └── user.py
+├── migrations/
+├── requirements.txt
+└── docs/
+    └── screenshots/
