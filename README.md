@@ -1,7 +1,9 @@
-# ADC Backend
+# ADC — AI Dream Chat
 
-**Anonymous Dream Chat (ADC)**  
-A backend for a platform where users can post dreams, comment, chat in real time, and explore interpretations across cultures  all anonymously.
+**ADC (AI Dream Chat)** is an intelligent assistant that interprets dreams using AI, transforming your subconscious thoughts into meaningful insights. Built with Flask and a modular backend, ADC features a fully documented API and a structured database design, making it easy to explore, extend, and integrate.
+
+Ask about your dreams, get real-time AI-powered interpretations, and see how each endpoint connects to the system  all while reviewing a clean, professional backend showcase.
+
 
 ## 🌍 Live Demo
 [View Live Website](https://your-live-app-link.com)
