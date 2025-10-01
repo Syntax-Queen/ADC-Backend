@@ -413,3 +413,22 @@ def delete_group(group_id):
     db.session.commit()
     
     return jsonify({"success": "Group deleted"}), 200
+
+
+# Send message in Group
+@app.route('/groups/<int:group_id>', methods=['POST'])
+@auth.login_required
+def send_message(group_id):
+    current_user = auth.current_user()
+    data = request.json
+    
+    # check membership
+    membership = GroupMember.query.filter_by(user_id=current_user.id, group_id=group_id).first()
+    if not membership:
+        return jsonify({'error': 'You are not a member of this group'}), 403
+    
+    msg = Message(group_id=group_id, user_id=current_user.id, content=data.get('content'))
+    db.session.add(msg)
+    db.session.commit()
+    
+    return jsonify({'success': True, 'message_id': msg.id}), 201
