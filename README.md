@@ -19,7 +19,9 @@ Built from scratch with a Python backend and modern frontend tools.
 - **Backend:** Python (Flask)  
 - **Real-time Communication:** WebSocket  
 - **Authentication:** Flask sessions / JWT  
-- **Database:** SQLite (dev), PostgreSQL (prod)  
+- **Database:** SQLite (dev), PostgreSQL (prod)
+
+- [create group](docs/screenshots/create-group.png)
 
 ## 📦 Installation
 ```bash
