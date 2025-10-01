@@ -119,3 +119,11 @@ class Message(db.Model):
     # reply_to = db.Column(db.Integer, db.ForeignKey("message.id"), nullable=True)
     
     user = db.relationship('User', backref='messages')
+    
+    
+class ChatMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)  # null if guest
+    role = db.Column(db.String(20))  # "user" or "assistant"
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)

@@ -3,7 +3,7 @@ from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
 from toolz import random_generator, validate_email
-from models import Comment, Group, GroupMember, Message, StoredjwtToken, User, PasswordResetToken, Post
+from models import ChatMessage, Comment, Group, GroupMember, Message, StoredjwtToken, User, PasswordResetToken, Post
 from auth import auth
 from datetime import datetime, timedelta
 import uuid
@@ -481,23 +481,74 @@ def view_messages(group_id):
 # 
 
 # chat with ai
-@app.route('/interpret', methods=['POST'])
-def interpret_dream():
+# @app.route('/interpret', methods=['POST'])
+# def interpret_dream():
+#     data = request.json
+#     dream_text = data.get("dream")
+    
+#     if not dream_text:
+#         return jsonify({'error': "No dream provided"})
+    
+#     # call openai
+#     response = client.responses.create(
+#         model = 'gpt-4.1-mini',
+        
+#         input=f"You are a dream interpretation AI. Interpret the following dream: {dream_text}",
+        
+#         max_output_tokens = 500
+#     )
+    
+#      # The text output is in response.output_text
+#     interpretation = response.output_text
+#     return jsonify({"interpretation": interpretation})
+
+
+# chat with ai
+@app.route('/chat', methods=['POST'])
+def chat():
     data = request.json
     dream_text = data.get("dream")
-    
+    token = request.headers.get("Authorization")  # if logged in
+
     if not dream_text:
-        return jsonify({'error': "No dream provided"})
-    
-    # call openai
-    response = client.responses.create(
-        model = 'gpt-4.1-mini',
-        
-        input=f"You are a dream interpretation AI. Interpret the following dream: {dream_text}",
-        
-        max_output_tokens = 500
+        return jsonify({'error': "No dream provided"}), 400
+
+    current_user = None
+    if token:
+        current_user = auth.current_user()  # logged in user
+
+    # If guest, only allow once
+    if not current_user:
+        # no user means guest → no chat history
+        response = client.responses.create(
+            model="gpt-4.1-mini",
+            input=f"You are a dream interpretation AI. Interpret the following dream: {dream_text}",
+            max_output_tokens=500
+        )
+        return jsonify({"interpretation": response.output_text, "guest": True})
+
+    # If logged in, fetch conversation history
+    history = ChatMessage.query.filter_by(user_id=current_user.id).order_by(ChatMessage.created_at).all()
+    messages = [{"role": h.role, "content": h.content} for h in history]
+
+    # Add new user message
+    messages.append({"role": "user", "content": dream_text})
+
+    # Call OpenAI with history
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {"role": "system", "content": "You are a dream interpretation AI. Be empathetic and insightful."},
+            *messages
+        ],
+        max_tokens=500
     )
-    
-     # The text output is in response.output_text
-    interpretation = response.output_text
-    return jsonify({"interpretation": interpretation})
+
+    reply = response.choices[0].message["content"]
+
+    # Save user + AI messages to DB
+    db.session.add(ChatMessage(user_id=current_user.id, role="user", content=dream_text))
+    db.session.add(ChatMessage(user_id=current_user.id, role="assistant", content=reply))
+    db.session.commit()
+
+    return jsonify({"reply": reply, "guest": False})
