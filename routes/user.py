@@ -369,3 +369,26 @@ def join_group(invite_link):
     return jsonify({'success': f'You joined {group.name}'}), 200
 
 
+
+# to remove member
+@app.route('/groups/<int:group_id>/remover/<int:user_id>', methods=['DELETE'])
+@auth.login_required
+def remove_member(group_id, user_id):
+    current_user = auth.current_user()
+    group = Group.query.get(group_id)
+    
+    if not group:
+        return jsonify({'error': 'group not found'}), 404
+    
+    # only admin or self removal allowed
+    if group.owner_id != current_user.id and current_user != user_id:
+        return jsonify({'error': 'Not authorized'}), 403
+    
+    membership = GroupMember.query.filter_by(group_id=group_id, user_id=user_id).first()
+    if not membership:
+        return jsonify({'error': 'User not in group'}), 404
+    
+    db.session.delete(membership)
+    db.session.commit()
+    
+    return jsonify({'success': 'User removed'}), 200
