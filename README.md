@@ -23,8 +23,8 @@ Built from scratch with a Python backend and modern frontend tools.
 - Option to repost AI interpretations for the community to learn from
 - Real-time messaging with WebSockets  
 - Time-based edit restrictions (e.g., you can edit a post only within 3 hours)  
-- Anonymous by design — no profile photo or personal bios collected
-- - Clean, distraction-free frontend UI  
+- Anonymous by design no profile photo or personal bios collected
+-  Clean, distraction-free frontend UI  
 
 ---
 
