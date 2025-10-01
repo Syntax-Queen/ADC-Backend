@@ -2,7 +2,7 @@ from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
 from toolz import random_generator, validate_email
-from models import Comment, Group, GroupMember, StoredjwtToken, User, PasswordResetToken, Post
+from models import Comment, Group, GroupMember, Message, StoredjwtToken, User, PasswordResetToken, Post
 from auth import auth
 from datetime import datetime, timedelta
 import uuid
@@ -392,3 +392,24 @@ def remove_member(group_id, user_id):
     db.session.commit()
     
     return jsonify({'success': 'User removed'}), 200
+
+
+# delete Group
+@app.route('/groups/<int:group_id>', methods=['DELETE'])
+@auth.login_required
+def delete_group(group_id):
+    current_user = auth.current_user()
+    group = Group.query.get(group_id)
+    if not group:
+        return jsonify({"error": "Group not found"}), 404
+    
+    if group.owner_id != current_user.id:
+        return jsonify({"error": "Only the owner can delete the group"}), 403
+    
+    # delete related rows
+    GroupMember.query.filter_by(group_id=group_id).delete()
+    Message.query.filter_by(group_id=group_id).delete()
+    db.session.delete(group)
+    db.session.commit()
+    
+    return jsonify({"success": "Group deleted"}), 200
