@@ -3,6 +3,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
+
 app = Flask(__name__)
 from flask_socketio import SocketIO, join_room, leave_room
 

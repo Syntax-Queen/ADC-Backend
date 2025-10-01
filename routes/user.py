@@ -7,6 +7,15 @@ from models import Comment, Group, GroupMember, Message, StoredjwtToken, User, P
 from auth import auth
 from datetime import datetime, timedelta
 import uuid
+from flask import Flask, request, jsonify
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # loads .env file
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 # Sign up
 @app.route('/signup', methods=['POST'])
@@ -468,3 +477,27 @@ def view_messages(group_id):
         })
 
     return jsonify(result), 200
+
+# 
+
+# chat with ai
+@app.route('/interpret', methods=['POST'])
+def interpret_dream():
+    data = request.json
+    dream_text = data.get("dream")
+    
+    if not dream_text:
+        return jsonify({'error': "No dream provided"})
+    
+    # call openai
+    response = client.responses.create(
+        model = 'gpt-4.1-mini',
+        
+        input=f"You are a dream interpretation AI. Interpret the following dream: {dream_text}",
+        
+        max_output_tokens = 500
+    )
+    
+     # The text output is in response.output_text
+    interpretation = response.output_text
+    return jsonify({"interpretation": interpretation})
