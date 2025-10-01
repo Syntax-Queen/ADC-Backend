@@ -116,3 +116,6 @@ class Message(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    # reply_to = db.Column(db.Integer, db.ForeignKey("message.id"), nullable=True)
+    
+    user = db.relationship('User', backref='messages')

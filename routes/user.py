@@ -439,3 +439,32 @@ def send_message(group_id):
 )
     
     return jsonify({'success': True, 'message_id': msg.id}), 201
+
+
+# view message 
+@app.route("/groups/<int:group_id>/messages", methods=["GET"])
+@auth.login_required
+def view_messages(group_id):
+    current_user = auth.current_user()
+
+    # check if user is a member of the group
+    membership = GroupMember.query.filter_by(user_id=current_user.id, group_id=group_id).first()
+    if not membership:
+        return jsonify({"error": "You are not a member of this group"}), 403
+
+    # fetch all messages for this group, newest first (or oldest first if you prefer)
+    messages = Message.query.filter_by(group_id=group_id).order_by(Message.created_at.asc()).all()
+
+    # prepare response
+    result = []
+    for msg in messages:
+        result.append({
+            "id": msg.id,
+            "content": msg.content,
+            "created_at": msg.created_at.isoformat(),
+            "user_id": msg.user_id,
+            "username": msg.user.username,   # assuming relationship User
+            # "reply_to": msg.reply_to
+        })
+
+    return jsonify(result), 200

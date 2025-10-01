@@ -1,0 +1,547 @@
+{
+	"info": {
+		"_postman_id": "b021050f-659b-40f0-8727-2fc6b05918b1",
+		"name": "ADC - Ai Dream Chat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45588278",
+		"_collection_link": "https://queen-6232532.postman.co/workspace/Queen's-Workspace~cd907e5a-7885-41cf-8295-d1fd2cbe6056/collection/45588278-b021050f-659b-40f0-8727-2fc6b05918b1?action=share&source=collection_link&creator=45588278"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Princess\",\r\n    \"email\": \"adebisiqueen321@gmail.com\",\r\n    \"password\": \"Queen44zzi\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/signup",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"signup"
+					]
+				},
+				"description": "### Signup API Endpoint\n\nThis endpoint allows users to create a new account by providing their username, email, and password.\n\n#### Request\n\n- **Method**: POST\n    \n- **URL**: `http://127.0.0.1:5000/signup`\n    \n- **Content-Type**: application/json\n    \n\n#### Request Body Format\n\nThe request body must be a JSON object containing the following fields:\n\n- `username` (string): The desired username for the new account.\n    \n- `email` (string): The email address associated with the account.\n    \n- `password` (string): The password for the account.\n    \n\n**Example Request Body**:\n\n``` json\n{\n  \"username\": \"your_username\",\n  \"email\": \"your_email@example.com\",\n  \"password\": \"your_password\"\n}\n\n ```\n\n#### Response Structure\n\nUpon successful account creation, the server will respond with a JSON object indicating the outcome of the request. The response may include:\n\n- A success message confirming the account creation.\n    \n- Any relevant user information or an identifier for the new account.\n    \n\nMake sure to handle any errors appropriately, as the response may also include error messages if the request fails due to validation issues or other server-side problems."
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNzYwMDIxNTU1fQ.S3RXGSmiA1SSgNJrKPoEdI57s0ott3DtPk-j3Gc6U5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\" : \"adebisiqueen321@gmail.com\",\r\n    \"password\" : \"Queen44zzi\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				},
+				"description": "## Login Endpoint\n\nThis endpoint is used to authenticate a user by logging them into the system.\n\n### Request Method\n\n- **POST**\n    \n\n### Request URL\n\n- `http://127.0.0.1:5000/login`\n    \n\n### Request Body\n\nThe request body must be in JSON format and should include the following parameters:\n\n- **email** (string): The email address of the user attempting to log in.\n    \n- **password** (string): The password associated with the provided email address.\n    \n\n### Example Request Body\n\n``` json\n{\n    \"email\": \"user@example.com\",\n    \"password\": \"userpassword\"\n}\n\n ```\n\n### Expected Response\n\nUpon successful authentication, the server will respond with a JSON object indicating the success of the login attempt. The response may include user-specific information and a session token for further authenticated requests.\n\n### Response Format\n\nThe response will typically be in JSON format, containing keys that represent the status of the login attempt and any additional user data necessary for the session."
+			},
+			"response": []
+		},
+		{
+			"name": "forget-password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"adebisiqueen@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/forget-password",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"forget-password"
+					]
+				},
+				"description": "## Forget Password Endpoint\n\nThis endpoint is used to initiate the password recovery process for a user by sending a password reset link to the provided email address. It is essential for users who have forgotten their passwords and need assistance in resetting them.\n\n### Request\n\n- **Method**: POST\n    \n- **URL**: `http://127.0.0.1:5000/forget-password`\n    \n\n#### Request Body\n\nThe request body must be in JSON format and should contain the following parameter:\n\n- **email** (string): The email address associated with the user account. This is required to identify the user and send the password reset link.\n    \n\n**Example Request Body:**\n\n``` json\n{\n  \"email\": \"user@example.com\"\n}\n\n ```\n\n### Response\n\nThe response structure will typically include information about the success or failure of the request. The expected response may contain:\n\n- **status** (string): Indicates whether the request was successful or if there was an error.\n    \n- **message** (string): Provides additional information regarding the status of the request, such as confirmation of the email being sent or details about any errors encountered.\n    \n\n**Example Response:**\n\n``` json\n{\n  \"status\": \"success\",\n  \"message\": \"Password reset link has been sent to your email.\"\n}\n\n ```\n\n### Notes\n\n- Ensure that the email provided is valid and registered in the system to receive the password reset link.\n    \n- If the email is not found, the response will indicate an error without disclosing whether the email exists in the system for security reasons."
+			},
+			"response": []
+		},
+		{
+			"name": "post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNzYwMDIxNTU1fQ.S3RXGSmiA1SSgNJrKPoEdI57s0ott3DtPk-j3Gc6U5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"I had a dream a book was handed over to me\",\r\n    \"content\" : \"I think i might be a choosen one\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/post",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"post"
+					]
+				},
+				"description": "## POST Request to `/post`\n\nThis endpoint allows users to submit a new post with a title and content. It is designed to accept a JSON payload that contains the details of the post being created.\n\n### Request Body Format\n\nThe request body must be sent in JSON format and should include the following parameters:\n\n- **title** (string): The title of the post. This should be a brief and descriptive summary of the post's content.\n    \n- **content** (string): The main content of the post. This can be a more detailed explanation or narrative related to the title.\n    \n\n**Example of a valid request body:**\n\n``` json\n{\n  \"title\": \"Your Post Title Here\",\n  \"content\": \"Your post content goes here.\"\n}\n\n ```\n\n### Response Structure\n\nUpon successful creation of the post, the server will respond with a JSON object that typically includes:\n\n- **status** (string): Indicates the success or failure of the request (e.g., \"success\" or \"error\").\n    \n- **message** (string): A descriptive message providing additional context about the request outcome.\n    \n- **postId** (string): The unique identifier for the newly created post.\n    \n\n**Example of a successful response:**\n\n``` json\n{\n  \"status\": \"success\",\n  \"message\": \"Post created successfully.\",\n  \"postId\": \"12345\"\n}\n\n ```\n\nThis endpoint is crucial for enabling users to share their thoughts and experiences through posts, contributing to the overall content of the application."
+			},
+			"response": []
+		},
+		{
+			"name": "comment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNzYwMDIxNTU1fQ.S3RXGSmiA1SSgNJrKPoEdI57s0ott3DtPk-j3Gc6U5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"post_id\" : 1,\r\n    \"comment\" : \"funny it usaully mean you are madly inlove\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/add-comment/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"add-comment",
+						"2"
+					]
+				},
+				"description": "## Add Comment Endpoint\n\nThis endpoint allows users to add a comment to a specific post identified by its `post_id`.\n\n### Request\n\n- **Method**: POST\n    \n- **URL**: `http://127.0.0.1:5000/add-comment/{post_id}`\n    \n\n#### Request Body\n\nThe request body must be in JSON format and include the following parameters:\n\n- **post_id** (integer): The ID of the post to which the comment is being added.\n    \n- **comment** (string): The text content of the comment.\n    \n\n#### Example Request Body\n\n``` json\n{\n  \"post_id\": 1,\n  \"comment\": \"funny it usually mean you are ...\"\n}\n\n ```\n\n### Response\n\nUpon a successful request, the server will respond with a confirmation of the comment addition. The exact structure of the response will depend on the implementation but typically includes a success message and possibly the ID of the newly created comment.\n\n### Notes\n\n- Ensure that the `post_id` corresponds to an existing post in the system.\n    \n- Comments may have restrictions such as length or content moderation, which should be considered when submitting."
+			},
+			"response": []
+		},
+		{
+			"name": "view all post-comment",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/view-posts-comment",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"view-posts-comment"
+					]
+				},
+				"description": "### View Posts Comments API\n\nThis endpoint retrieves comments associated with posts from the server. It is designed to allow clients to fetch all comments related to posts for display or processing purposes.\n\n#### Request\n\n- **Method**: GET\n    \n- **URL**: `http://127.0.0.1:5000/view-posts-comment`\n    \n\n#### Expected Input Parameters\n\nThis endpoint does not require any specific input parameters in the query string. However, it may accept optional parameters to filter or paginate the comments, depending on the implementation.\n\n#### Response Structure\n\n- **Status Code**: 200\n    \n- **Content-Type**: text/xml\n    \n\nThe response will be formatted in XML, containing the details of the comments associated with the posts. The structure of the XML will include elements that represent each comment, such as the comment text, author, and associated post ID. The exact structure may vary based on the implementation.\n\nEnsure to handle the response appropriately, as it will be in XML format."
+			},
+			"response": []
+		},
+		{
+			"name": "view single post",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/post/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"post",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view comments on a post",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/post/1/comments",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"post",
+						"1",
+						"comments"
+					]
+				},
+				"description": "## Get Comments for a Post\n\nThis endpoint retrieves a list of comments associated with a specific post identified by its unique ID.\n\n### Request\n\n- **Method**: GET\n    \n- **URL**: `http://127.0.0.1:5000/post/{post_id}/comments`\n    \n\n#### Path Parameters\n\n- `post_id` (integer): The unique identifier of the post for which comments are being fetched. In this example, the post ID is `1`.\n    \n\n### Response\n\n- **Status Code**: 200 OK\n    \n- **Content-Type**: application/json\n    \n\n#### Response Body\n\nThe response body is a JSON array containing objects that represent each comment. Each comment object includes the following fields:\n\n- `author_id` (integer): The unique identifier of the author who made the comment.\n    \n- `comment` (string): The text content of the comment.\n    \n- `created_at` (string): The timestamp indicating when the comment was created.\n    \n- `id` (integer): The unique identifier of the comment.\n    \n\n### Notes\n\n- Ensure that the post ID provided in the request is valid and exists in the database to receive the corresponding comments.\n    \n- If there are no comments for the specified post, an empty array will be returned."
+			},
+			"response": []
+		},
+		{
+			"name": "edit post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNzYwMDIxNTU1fQ.S3RXGSmiA1SSgNJrKPoEdI57s0ott3DtPk-j3Gc6U5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"I had a dream a book was handed over to me\",\r\n    \"content\" : \"I think i might be a choosen one. anyways\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/post/1/edit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"post",
+						"1",
+						"edit"
+					]
+				},
+				"description": "### Update Post\n\nThis endpoint allows you to update an existing post by its ID. The request is made using the HTTP PUT method, targeting the specific post identified by the ID in the URL.\n\n#### Request Parameters\n\nThe request body must be in JSON format and include the following parameters:\n\n- **title** (string): The new title of the post. This should provide a brief overview of the post's content.\n    \n- **content** (string): The main content of the post. This should contain the detailed information or narrative that the post is intended to convey.\n    \n\n#### Example Request Body\n\n``` json\n{\n  \"title\": \"Updated Post Title\",\n  \"content\": \"Updated content of the post goes here.\"\n}\n\n ```\n\n#### Expected Response\n\nUpon a successful update, the API will return a response indicating the status of the operation. The expected response will typically include:\n\n- **status** (string): A message indicating whether the update was successful or if there were any errors.\n    \n- **post** (object): The updated post object containing the new title and content.\n    \n\n#### Notes\n\n- Ensure that the post ID in the URL corresponds to an existing post; otherwise, the update will fail.\n    \n- Proper error handling should be implemented to manage cases where the request body is missing required fields or contains invalid data."
+			},
+			"response": []
+		},
+		{
+			"name": "create group",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNzYwMDIxNTU1fQ.S3RXGSmiA1SSgNJrKPoEdI57s0ott3DtPk-j3Gc6U5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\" : 1,\r\n    \"name\": \"The seers\",\r\n    \"invite_link\": \"diuhqwbjhhhquihqwhqwiiwq\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/groups",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"groups"
+					]
+				},
+				"description": "## Create a New Group\n\nThis endpoint allows you to create a new group by sending a POST request to the `/groups` endpoint. Upon successful creation, the server will return the details of the newly created group.\n\n### Request Parameters\n\nThe request body must be in JSON format and include the following parameters:\n\n- **id** (integer): A unique identifier for the group.\n    \n- **name** (string): The name of the group.\n    \n- **invite_link** (string): A link that can be used to invite others to the group.\n    \n\n#### Example Request Body\n\n``` json\n{\n  \"id\": 1,\n  \"name\": \"The seers\",\n  \"invite_link\": \"diuhqwbjhhhquihqwhqwiiwq\"\n}\n\n ```\n\n### Response Structure\n\nOn a successful request, the server will respond with a status code of `201 Created` and a JSON object containing the following fields:\n\n- **id** (integer): The unique identifier of the created group (may differ from the input).\n    \n- **name** (string): The name of the created group (should match the input).\n    \n- **invite_link** (string): The invite link for the created group (may differ from the input).\n    \n\n#### Example Response\n\n``` json\n{\n  \"id\": 0,\n  \"invite_link\": \"\",\n  \"name\": \"\"\n}\n\n ```\n\n### Notes\n\n- Ensure that the `id` provided is unique to avoid conflicts.\n    \n- The response may contain default or empty values for fields that were not processed or generated by the server."
+			},
+			"response": []
+		},
+		{
+			"name": "join group",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNzYwMjAxNjY5fQ._JuUmxT7-nwZFKhR-J-11ryRaRTjTgum9OnzZa0SV0g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/join/c4b675d8-8104-4ed3-b8d8-c6e0d9169a9d",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"join",
+						"c4b675d8-8104-4ed3-b8d8-c6e0d9169a9d"
+					]
+				},
+				"description": "### Join Endpoint\n\nThis endpoint allows users to join a specific session identified by a unique session ID. The session ID is provided as part of the URL path.\n\n#### Request\n\n- **Method**: POST\n    \n- **URL**: `http://127.0.0.1:5000/join/{session_id}`\n    \n\n**Path Parameter:**\n\n- `session_id` (string): The unique identifier for the session you wish to join. In this example, the session ID is `c4b675d8-8104-4ed3-b8d8-c6e0d9169a9d`.\n    \n\n#### Response\n\n- **Status Code**: 200\n    \n- **Content-Type**: application/json\n    \n- **Body**:\n    \n    - `success`: A string indicating the success of the join operation.\n        \n\n#### Notes\n\n- Ensure that the session ID is valid and corresponds to an active session to receive a successful response.\n    \n- The response will confirm the operation's success, but no additional data is provided in the response body."
+			},
+			"response": []
+		},
+		{
+			"name": "remove group",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNzYwMDIxNTU1fQ.S3RXGSmiA1SSgNJrKPoEdI57s0ott3DtPk-j3Gc6U5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/groups/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"groups",
+						"1"
+					]
+				},
+				"description": "## DELETE /groups/{id}\n\nThis endpoint is used to delete a specific group identified by its unique ID.\n\n### Parameters\n\n- **id** (path parameter): The unique identifier of the group to be deleted. In this example, the ID is `1`.\n    \n\n### Response\n\nUpon successful deletion, the response will typically include a status message indicating the result of the operation. The structure of the response may vary based on the implementation, but it generally confirms that the group has been successfully deleted.\n\n### Example Response\n\n``` json\n{\n    \"message\": \"Group deleted successfully.\"\n}\n\n ```\n\nMake sure to handle cases where the specified group ID does not exist, which may return an error message indicating that the group could not be found."
+			},
+			"response": []
+		},
+		{
+			"name": "remove member",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNzYwMDIxNTU1fQ.S3RXGSmiA1SSgNJrKPoEdI57s0ott3DtPk-j3Gc6U5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/groups/1/remover/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"groups",
+						"1",
+						"remover",
+						"2"
+					]
+				},
+				"description": "### DELETE /groups/{groupId}/remover/{memberId}\n\nThis endpoint is used to remove a specific member from a group. By sending a DELETE request to this endpoint, you can effectively delete the association of the specified member from the group identified by the group ID.\n\n#### URL Parameters\n\n- **groupId** (path parameter): The unique identifier of the group from which a member is to be removed.\n    \n- **memberId** (path parameter): The unique identifier of the member that is to be removed from the group.\n    \n\n#### Expected Response\n\nUpon successful removal of the member, the server will respond with a status indicating the outcome of the operation. The response may include a confirmation message or status code indicating the success or failure of the request.\n\nMake sure to handle any potential errors that may arise, such as attempting to remove a member that does not exist or trying to remove a member from a group that does not exist."
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/groups/1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNzYwMDIxNTU1fQ.S3RXGSmiA1SSgNJrKPoEdI57s0ott3DtPk-j3Gc6U5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"group_id\": 1,\r\n    \"user_id\" : 2,\r\n    \"content\" : \"Hello everyone welcome as a member\"\r\n    // \"message_id\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/groups/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"groups",
+						"1"
+					]
+				},
+				"description": "### Add User Message to Group\n\nThis endpoint allows users to send a message to a specific group. By making a POST request to this endpoint, you can add a new message that will be visible to all members of the specified group.\n\n#### Request Format\n\n- **URL**: `http://127.0.0.1:5000/groups/{group_id}`\n    \n- **Method**: POST\n    \n- **Content-Type**: application/json\n    \n\n#### Request Body Parameters\n\nThe request body should be in JSON format and must include the following parameters:\n\n- **group_id** (integer): The unique identifier of the group to which the message is being sent.\n    \n- **user_id** (integer): The unique identifier of the user sending the message.\n    \n- **content** (string): The content of the message being sent.\n    \n\n**Example Request Body**:\n\n``` json\n{\n  \"group_id\": 1,\n  \"user_id\": 2,\n  \"content\": \"Hello everyone, welcome!\"\n}\n\n ```\n\n#### Response Structure\n\nUpon a successful request, the API will return a response with the following structure:\n\n- **Status Code**: 201 Created\n    \n- **Content-Type**: application/json\n    \n\nThe response body will contain:\n\n- **message_id** (integer): The unique identifier of the newly created message.\n    \n- **success** (boolean): Indicates whether the message was successfully added to the group.\n    \n\n**Example Response**:\n\n``` json\n{\n  \"message_id\": 0,\n  \"success\": true\n}\n\n ```\n\nThis endpoint is essential for facilitating communication within groups, allowing users to share messages seamlessly."
+			},
+			"response": []
+		}
+	]
+}
