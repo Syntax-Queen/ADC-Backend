@@ -344,3 +344,28 @@ def create_group():
         "name": group.name,
         "invite_link" : f"/join/{group.invite_link}"
     }), 201
+    
+    
+
+# join group through link
+@app.route('/join/<invite_link>', methods=['POST'])
+@auth.login_required
+def join_group(invite_link):
+    current_user = auth.current_user()
+    
+    group = Group.query.filter_by(invite_link=invite_link).first()
+    
+    if not group:
+        return jsonify({'error': 'Invalid link'}), 404
+    
+    # prevent duplicate join
+    if GroupMember.query.filter_by(user_id=current_user.id, group_id=group.id).first():
+        return jsonify({'error': 'Already a member'}), 400
+    
+    member = GroupMember(user_id=current_user.id, group_id=group.id)
+    db.session.add(member)
+    db.session.commit()
+    
+    return jsonify({'success': f'You joined {group.name}'}), 200
+
+
