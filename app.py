@@ -1,13 +1,16 @@
 from flask import Flask, jsonify
-from flask_socketio import SocketIO
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
 app = Flask(__name__)
+from flask_socketio import SocketIO, join_room, leave_room
+
 
 app.config.from_object(Config)
-socketio = SocketIO(cors_allowed_origins="*") #allow cors for frontend
+
+# bind socketio to flask app
+socketio = SocketIO( app, cors_allowed_origins="*") #allow cors for frontend
 
 db = SQLAlchemy(app=app)
 migrate = Migrate(app=app, db=db)
@@ -15,3 +18,21 @@ migrate = Migrate(app=app, db=db)
 import models
 
 from routes import user
+
+@socketio.on("join")
+def on_join(data):
+    group_id = data.get("group_id")
+    username = data.get("username")
+    room = f'group_{group_id}'
+    join_room(room)
+    socketio.emit("status", {'msg': f"{username} has joined the group"}, room=room)
+    
+    
+    
+@socketio.on("leave")
+def on_leave(data):
+    group_id = data.get('group_id')
+    username = data.get("username")
+    room = f'group_{group_id}'
+    leave_room(room)
+    socketio.emit('status', {'msg': f'{username} has left the group'}, room=room)

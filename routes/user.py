@@ -1,3 +1,4 @@
+from app import socketio
 from app import app, db
 from flask import jsonify, request
 from flask_cors import cross_origin
@@ -430,5 +431,11 @@ def send_message(group_id):
     msg = Message(group_id=group_id, user_id=current_user.id, content=data.get('content'))
     db.session.add(msg)
     db.session.commit()
+    
+    socketio.emit(
+    "new_message",
+    {"message": msg.content, "user": current_user.username},
+    room=f"group_{group_id}"
+)
     
     return jsonify({'success': True, 'message_id': msg.id}), 201
