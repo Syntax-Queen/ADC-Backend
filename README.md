@@ -34,6 +34,7 @@ Users can create groups, send messages in real time using **WebSockets**, join g
 ## 📸 Screenshots
 
 ### 🔑 Authentication
+![Signup](screenshots/signup.png)
 ![Login](screenshots/login.png)
 
 ### 👥 Group Management
