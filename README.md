@@ -1,31 +1,52 @@
-# ADC - Ai Dream Chat
+# ADC Backend
 
-A unique real-time platform where users can post about their dreams, share interpretations, and connect through comments  all while staying anonymous.  
-No profile pictures, no flashy bios just raw conversations. Users can also choose to repost the AI’s deep cultural analysis of their dream so others can learn what it means in different traditions and societies.  
+A Flask-powered backend for a group messaging and collaboration system.  
+Users can create groups, send messages in real time using **WebSockets**, join groups through invite links, and manage group membership (add/remove members, delete groups, or leave on their own).
 
-Built from scratch with a Python backend and modern frontend tools.  
+---
 
 ## 🚀 Features
-- Anonymous posting (no profile pictures, no personal details)
-- Share dreams and get comments from other users
-- AI-powered dream interpretation that explores meanings in your own culture and across others
-- Option to repost AI interpretations for the community to learn from
-- Real-time messaging with WebSocket
-- User authentication (sign up, login, logout)
-- Clean, distraction-free frontend UI  
+
+- 🔑 **User Authentication** – Secure login system with `Flask-HTTPAuth`.
+- 👥 **Group Management**
+  - Create groups.
+  - Add/remove members.
+  - Delete groups.
+  - Leave groups independently.
+- 💬 **Messaging**
+  - Send and view messages inside groups.
+  - Real-time messaging powered by **Flask-SocketIO**.
+  - Join/leave notifications with WebSockets.
+- 🔗 **Invite System** – Users can join via a unique invite link.
+- 📜 **Database Integration** – SQLAlchemy + Flask-Migrate for schema handling.
+
+---
 
 ## 🛠 Tech Stack
-- **Frontend:** JavaScript, (Vue.js) , HTML, Css, (Tailwind css)  
-- **Backend:** Python (Flask)  
-- **Real-time Communication:** WebSocket  
-- **Authentication:** Flask sessions / JWT  
-- **Database:** SQLite (dev), PostgreSQL (prod)
 
-- [create group](docs/screenshots/create-group.png)
+- **Backend:** Flask, Flask-SocketIO, Flask-Migrate, Flask-SQLAlchemy
+- **Auth:** Flask-HTTPAuth
+- **Database:** SQLite / PostgreSQL
+- **Realtime:** WebSockets (Socket.IO)
 
-## 📦 Installation
-```bash
-git clone https://github.com/yourusername/dream-chat-app.git
-cd ai-dream-chat
-pip install -r requirements.txt
+---
 
+## 📸 Screenshots
+
+### 🔑 Authentication
+![Login](screenshots/login.png)
+
+### 👥 Group Management
+![Group](screenshots/group.png)
+
+### 💬 Messaging
+![Chat](screenshots/chat.png)
+
+---
+
+## ⚙️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Syntax-Queen/ADC-Backend.git
+   cd ADC-Backend
