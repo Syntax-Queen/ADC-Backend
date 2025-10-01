@@ -1,8 +1,8 @@
-# ADC — AI Dream Chat
+# ADC - Ai Dream Chat
+A unique real-time platform where users can post about their dreams, share interpretations, and connect through comments  all while staying anonymous.  
+No profile pictures, no flashy bios just raw conversations. Users can also choose to repost the AI’s deep cultural analysis of their dream so others can learn what it means in different traditions and societies.  
 
-**ADC (AI Dream Chat)** is an intelligent assistant that interprets dreams using AI, transforming your subconscious thoughts into meaningful insights. Built with Flask and a modular backend, ADC features a fully documented API and a structured database design, making it easy to explore, extend, and integrate.
-
-Ask about your dreams, get real-time AI-powered interpretations, and see how each endpoint connects to the system  all while reviewing a clean, professional backend showcase.
+Built from scratch with a Python backend and modern frontend tools.  
 
 
 ## 🌍 Live Demo
@@ -17,10 +17,14 @@ Ask about your dreams, get real-time AI-powered interpretations, and see how eac
 
 - User authentication (sign up, login, JWT tokens)  
 - Post dreams & add comments  
-- Create chat groups, invite via unique link, add/remove users  
+- Create chat groups, invite via unique link, add/remove users
+- Share dreams and get comments from other users
+- AI-powered dream interpretation that explores meanings in your own culture and across others
+- Option to repost AI interpretations for the community to learn from
 - Real-time messaging with WebSockets  
 - Time-based edit restrictions (e.g., you can edit a post only within 3 hours)  
-- Anonymous by design — no profile photo or personal bios collected  
+- Anonymous by design — no profile photo or personal bios collected
+- - Clean, distraction-free frontend UI  
 
 ---
 
