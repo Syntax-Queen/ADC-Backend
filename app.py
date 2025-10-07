@@ -5,6 +5,8 @@ from config import Config
 
 
 app = Flask(__name__)
+CORS(app)  # allow all origins for testing
+
 from flask_socketio import SocketIO, join_room, leave_room
 
 
