@@ -18,7 +18,10 @@ migrate = Migrate(app=app, db=db)
 
 import models
 
-from routes import user
+# from routes import user
+
+with app.app_context():
+    db.create_all()
 
 @socketio.on("join")
 def on_join(data):
