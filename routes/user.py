@@ -19,7 +19,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Sign up
 @app.route('/signup', methods=['POST'])
-# @cross_origin()
+@cross_origin()
 def sign_up():
         data = request.json
         username = data.get('username')
