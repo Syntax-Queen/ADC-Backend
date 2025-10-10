@@ -4,18 +4,6 @@ No profile pictures, no flashy bios just raw conversations. Users can also choos
 
 Built from scratch with a Python backend and modern frontend tools.  
 
-## 🎥 Demo Video
-
-<iframe width="560" height="315" 
-  src="https://www.youtube.com/embed/gLpd5UGjjNE"
-  title="ADC Frontend Demo"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen>
-</iframe>
-
-
-
 ---
 ## 📖 Documentation
 - [API Docs](ADC-documentation.json)
